@@ -16,7 +16,7 @@ namespace ThreadAsyncDirectoryFile.Models
         public int Id { get; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime SharedTime { get; set; }
 
         public Status(string title, string content)
         {
@@ -24,6 +24,16 @@ namespace ThreadAsyncDirectoryFile.Models
             _ID = Id;
             Title = title;
             Content = content;
+            SharedTime = DateTime.Now;
+        }
+
+        public void GetStatusInfo()
+        {
+            var interval = DateTime.Now.Subtract(SharedTime).Milliseconds;
+            Console.WriteLine($"ID: {Id} \n" +
+                $"Title: {Title} \n" +
+                $"Content: {Content} \n" +
+                $"SharedDate: {SharedTime}");
         }
 
     }

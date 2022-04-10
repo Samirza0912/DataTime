@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ThreadAsyncDirectoryFile.Exception1;
 
 namespace ThreadAsyncDirectoryFile.Models
 {
@@ -22,43 +23,63 @@ namespace ThreadAsyncDirectoryFile.Models
         private static int _id;
         public int id { get; }
         public string UserName { get; set; }
+        List<Status> statuses;
 
         public User(string username)
         {
             _id = id;
             _id++;
             UserName = username;
+            statuses = new List<Status>();
         }
-
-        List<Status> statuses = new List<Status>();
 
         public void ShareStatus(Status status)
         {
             statuses.Add(status);
-            Console.WriteLine($"ID:{status.Id}");
         }
 
-        public void GetStatusById(int? id)
+        public Status GetStatusById(int? id)
         {
             foreach (Status status in statuses)
             {
                 if (status.Id == id)
                 {
-                    status
+                    status.GetStatusInfo();    
                 }
-
+                else if (id == null)
+                {
+                    throw new NullReferenceException("id is empty");
+                }
             }
+            return null;
         }
 
         public void GetAllStatuses()
         {
-            Console.WriteLine();
+            foreach (var item in statuses)
+            {
+                Console.WriteLine($"ID: {item.Id} \n" +
+                $"Title: {item.Title} \n" +
+                $"Content: {item.Content} \n" +
+                $"SharedDate: {item.SharedTime}");
+            } 
         }
-
-        public void FilterStatusByDate(int? id)
+        public void FilterStatusByDate(int? id, DateTime time)
         {
-
+            if (id == id)
+            {
+                foreach (Status item in statuses)
+                {
+                    if (time >= item.SharedTime)
+                    {
+                        Console.WriteLine(item);
+                    }
+                    else
+                    {
+                        throw new NotFoundException("no data after the shared date");
+                    }
+                }
+            }
         }
-
     }
 }
